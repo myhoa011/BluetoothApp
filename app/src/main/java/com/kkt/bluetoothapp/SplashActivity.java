@@ -50,10 +50,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkPermissions() {
-        if (!PermissionUtils.hasPermissions(this)) {
+        String[] requiredPermissions = PermissionUtils.getRequiredPermissions(this);
+        if (!PermissionUtils.hasPermissions(this, requiredPermissions)) {
             ActivityCompat.requestPermissions(
                 this,
-                PermissionUtils.getRequiredPermissions(),
+                requiredPermissions,
                 PERMISSION_REQUEST_CODE
             );
         } else {
@@ -74,7 +75,7 @@ public class SplashActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (PermissionUtils.hasPermissions(this)) {
+            if (PermissionUtils.hasPermissions(this, permissions)) {
                 checkBluetoothEnabled();
             } else {
                 Toast.makeText(this, "Required permissions not granted", Toast.LENGTH_LONG).show();

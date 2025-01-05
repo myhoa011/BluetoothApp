@@ -11,15 +11,13 @@ import java.util.List;
 
 public class PermissionUtils {
     
-    public static String[] getRequiredPermissions() {
+    public static String[] getRequiredPermissions(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            // Android 12 trở lên
             return new String[]{
                 Manifest.permission.BLUETOOTH_SCAN,
                 Manifest.permission.BLUETOOTH_CONNECT
             };
         } else {
-            // Android 11 trở xuống
             return new String[]{
                 Manifest.permission.BLUETOOTH,
                 Manifest.permission.BLUETOOTH_ADMIN,
@@ -28,11 +26,10 @@ public class PermissionUtils {
         }
     }
 
-    public static boolean hasPermissions(Context context) {
-        String[] permissions = getRequiredPermissions();
+    public static boolean hasPermissions(Context context, String[] permissions) {
+        if (permissions == null || permissions.length == 0) return true;
         for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(context, permission) 
-                != PackageManager.PERMISSION_GRANTED) {
+            if (context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }

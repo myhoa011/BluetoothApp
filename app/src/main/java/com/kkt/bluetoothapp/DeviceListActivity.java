@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.kkt.bluetoothapp.adapter.BluetoothDeviceAdapter;
 import com.kkt.bluetoothapp.databinding.ActivityDeviceListBinding;
 import com.kkt.bluetoothapp.model.BluetoothDeviceModel;
-import com.kkt.bluetoothapp.service.BluetoothService;
+import com.kkt.bluetoothapp.service.bluetooth.BluetoothCallback;
+import com.kkt.bluetoothapp.service.bluetooth.BluetoothService;
 
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
     private void setupBluetoothService() {
         bluetoothService = new BluetoothService(this);
-        bluetoothService.setCallback(new BluetoothService.BluetoothCallback() {
+        bluetoothService.setCallback(new BluetoothCallback() {
             @Override
             public void onDeviceFound(List<BluetoothDeviceModel> devices) {
                 runOnUiThread(() -> {
@@ -113,7 +114,7 @@ public class DeviceListActivity extends AppCompatActivity {
         if (isConnecting) return;
 
         new AlertDialog.Builder(this)
-                .setTitle("Connect to Device")
+                .setTitle("Connect to device")
                 .setMessage("Would you like to connect to " + device.getDeviceName() + "?")
                 .setPositiveButton("Connect", (dialog, which) -> {
                     isConnecting = true;
